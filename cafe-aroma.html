@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Café Aroma — Coffee, Slowly Done</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#f4ecdd;
+    --cream-soft:#eee2cc;
+    --espresso:#2b1b12;
+    --espresso-deep:#1c110b;
+    --brown:#5c3a21;
+    --gold:#b8894c;
+    --gold-soft:#d9b878;
+    --ink:#2b1b12;
+    --max:1180px;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Raleway',sans-serif;
+    font-weight:400;
+    line-height:1.7;
+    overflow-x:hidden;
+  }
+
+  h1,h2,h3,h4{
+    font-family:'Playfair Display',serif;
+    font-weight:600;
+    color:var(--espresso);
+    line-height:1.2;
+  }
+
+  a{color:inherit;text-decoration:none;}
+  img{display:block;max-width:100%;}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;}
+  ul{list-style:none;}
+
+  .wrap{
+    max-width:var(--max);
+    margin:0 auto;
+    padding:0 40px;
+  }
+
+  .eyebrow-rule{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-bottom:18px;
+  }
+  .eyebrow-rule span{
+    font-family:'Raleway',sans-serif;
+    font-size:13px;
+    letter-spacing:.04em;
+    color:var(--brown);
+  }
+  .eyebrow-rule::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background:linear-gradient(to right, var(--gold), transparent);
+  }
+
+  /* ---------- Header ---------- */
+  header{
+    position:fixed;
+    top:0;left:0;right:0;
+    z-index:1000;
+    padding:22px 0;
+    transition:background .4s ease, padding .4s ease, box-shadow .4s ease;
+  }
+  header.scrolled{
+    background:rgba(244,236,221,.96);
+    backdrop-filter:blur(6px);
+    padding:14px 0;
+    box-shadow:0 6px 24px rgba(43,27,18,.08);
+  }
+  header .wrap{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .logo{
+    font-family:'Playfair Display',serif;
+    font-size:24px;
+    font-weight:700;
+    color:var(--cream);
+    letter-spacing:.02em;
+    transition:color .4s ease;
+    display:flex;
+    align-items:baseline;
+    gap:6px;
+  }
+  .logo em{
+    font-style:italic;
+    font-weight:500;
+    color:var(--gold-soft);
+  }
+  header.scrolled .logo{color:var(--espresso);}
+  header.scrolled .logo em{color:var(--brown);}
+
+  nav ul{
+    display:flex;
+    gap:38px;
+  }
+  nav a{
+    font-size:14px;
+    color:var(--cream);
+    position:relative;
+    padding-bottom:4px;
+    transition:color .4s ease;
+  }
+  nav a::after{
+    content:"";
+    position:absolute;
+    left:0;bottom:0;
+    width:0;height:1px;
+    background:var(--gold);
+    transition:width .3s ease;
+  }
+  nav a:hover::after{width:100%;}
+  header.scrolled nav a{color:var(--espresso);}
+
+  .burger{
+    display:none;
+    flex-direction:column;
+    gap:5px;
+    width:26px;
+    z-index:1100;
+  }
+  .burger span{
+    height:2px;
+    width:100%;
+    background:var(--cream);
+    transition:all .35s ease;
+  }
+  header.scrolled .burger span{background:var(--espresso);}
+  .burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .burger.open span:nth-child(2){opacity:0;}
+  .burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;
+    height:100vh;
+    min-height:600px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:var(--cream);
+    overflow:hidden;
+  }
+  .hero-bg{
+    position:absolute;inset:0;
+    background:url('https://picsum.photos/seed/aroma-hero/1600/1000') center/cover no-repeat;
+  }
+  .hero-bg::after{
+    content:"";
+    position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(28,17,11,.55) 0%, rgba(28,17,11,.72) 60%, rgba(28,17,11,.92) 100%);
+  }
+  .hero-content{
+    position:relative;
+    z-index:2;
+    max-width:720px;
+    padding:0 24px;
+  }
+  .hero-content .kicker{
+    font-size:13px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--gold-soft);
+    margin-bottom:22px;
+    display:inline-block;
+  }
+  .hero-content h1{
+    font-size:clamp(42px, 6.5vw, 74px);
+    color:var(--cream);
+    margin-bottom:22px;
+  }
+  .hero-content h1 i{font-style:italic;color:var(--gold-soft);}
+  .hero-content p{
+    font-size:17px;
+    color:#e6d9c3;
+    max-width:480px;
+    margin:0 auto 34px;
+  }
+
+  .btn{
+    display:inline-block;
+    padding:15px 36px;
+    border:1px solid var(--gold);
+    color:var(--cream);
+    font-size:13px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    transition:background .35s ease, color .35s ease;
+  }
+  .btn:hover{background:var(--gold);color:var(--espresso-deep);}
+  .btn-solid{
+    background:var(--gold);
+    color:var(--espresso-deep);
+    border:1px solid var(--gold);
+  }
+  .btn-solid:hover{background:transparent;color:var(--cream);}
+
+  .scroll-cue{
+    position:absolute;
+    bottom:34px;left:50%;
+    transform:translateX(-50%);
+    z-index:2;
+    width:22px;height:36px;
+    border:1px solid rgba(244,236,221,.55);
+    border-radius:12px;
+  }
+  .scroll-cue::before{
+    content:"";
+    position:absolute;
+    top:6px;left:50%;
+    width:3px;height:7px;
+    background:var(--gold-soft);
+    border-radius:2px;
+    transform:translateX(-50%);
+    animation:cue 1.8s ease-in-out infinite;
+  }
+  @keyframes cue{
+    0%{opacity:1;top:6px;}
+    70%{opacity:0;top:16px;}
+    100%{opacity:0;top:6px;}
+  }
+
+  /* ---------- Reveal on scroll ---------- */
+  .reveal{
+    opacity:0;
+    transform:translateY(26px);
+    transition:opacity .9s ease, transform .9s ease;
+  }
+  .reveal.in{opacity:1;transform:translateY(0);}
+
+  section{padding:120px 0;}
+
+  /* ---------- Menu ---------- */
+  .menu{background:var(--cream);}
+  .menu-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    margin-bottom:64px;
+    gap:40px;
+    flex-wrap:wrap;
+  }
+  .menu-head h2{font-size:clamp(32px,4vw,46px);}
+  .menu-head p{max-width:340px;color:var(--brown);font-size:15px;}
+
+  .menu-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    column-gap:70px;
+  }
+  .menu-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:16px;
+    padding:22px 0;
+    border-bottom:1px solid rgba(92,58,33,.18);
+  }
+  .menu-item:first-child{padding-top:0;}
+  .menu-item-name{
+    font-family:'Playfair Display',serif;
+    font-size:20px;
+    color:var(--espresso);
+  }
+  .menu-item-desc{
+    display:block;
+    font-family:'Raleway',sans-serif;
+    font-size:13.5px;
+    color:var(--brown);
+    margin-top:5px;
+    font-weight:300;
+    max-width:320px;
+  }
+  .menu-item-price{
+    font-family:'Playfair Display',serif;
+    font-style:italic;
+    color:var(--gold);
+    font-size:18px;
+    white-space:nowrap;
+  }
+
+  /* ---------- Gallery ---------- */
+  .gallery{background:var(--espresso-deep);color:var(--cream);}
+  .gallery .eyebrow-rule span{color:var(--gold-soft);}
+  .gallery .eyebrow-rule::after{background:linear-gradient(to right, var(--gold), transparent);}
+  .gallery h2{color:var(--cream);margin-bottom:60px;font-size:clamp(32px,4vw,46px);}
+
+  .gallery-grid{
+    display:grid;
+    grid-template-columns:1.4fr 1fr;
+    grid-template-rows:220px 220px;
+    gap:16px;
+  }
+  .gallery-grid a{
+    position:relative;
+    overflow:hidden;
+    display:block;
+  }
+  .gallery-grid a img{
+    width:100%;height:100%;
+    object-fit:cover;
+    transition:transform .7s ease;
+  }
+  .gallery-grid a:hover img{transform:scale(1.06);}
+  .g1{grid-row:1 / 3;}
+  .g2{}
+  .g3{}
+  .g4{grid-column:2;}
+
+  /* ---------- About ---------- */
+  .about .wrap{
+    display:grid;
+    grid-template-columns:0.95fr 1.05fr;
+    gap:80px;
+    align-items:center;
+  }
+  .about-img{
+    position:relative;
+  }
+  .about-img img{
+    width:100%;
+    aspect-ratio:4/5;
+    object-fit:cover;
+  }
+  .about-img::before{
+    content:"";
+    position:absolute;
+    top:-22px;left:-22px;
+    width:100%;height:100%;
+    border:1px solid var(--gold);
+    z-index:-1;
+  }
+  .about-text h2{
+    font-size:clamp(30px,4vw,42px);
+    margin-bottom:26px;
+  }
+  .about-text p{
+    color:var(--brown);
+    margin-bottom:18px;
+    max-width:480px;
+  }
+  .about-text .pull{
+    font-family:'Playfair Display',serif;
+    font-style:italic;
+    font-size:20px;
+    color:var(--espresso);
+    border-left:2px solid var(--gold);
+    padding-left:20px;
+    margin:30px 0;
+  }
+
+  /* ---------- Testimonials ---------- */
+  .testimonials{background:var(--cream-soft);}
+  .testimonials h2{margin-bottom:60px;font-size:clamp(32px,4vw,46px);}
+  .t-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:50px;
+  }
+  .t-card{
+    border-top:2px solid var(--gold);
+    padding-top:26px;
+  }
+  .t-stars{
+    color:var(--gold);
+    font-size:14px;
+    letter-spacing:3px;
+    margin-bottom:16px;
+  }
+  .t-quote{
+    font-family:'Playfair Display',serif;
+    font-style:italic;
+    font-size:18px;
+    color:var(--espresso);
+    margin-bottom:22px;
+  }
+  .t-name{font-size:13px;letter-spacing:.04em;color:var(--brown);}
+  .t-name span{color:var(--espresso);font-weight:600;}
+
+  /* ---------- Contact ---------- */
+  .contact{background:var(--espresso);color:var(--cream);}
+  .contact .eyebrow-rule span{color:var(--gold-soft);}
+  .contact .eyebrow-rule::after{background:linear-gradient(to right, var(--gold), transparent);}
+  .contact h2{color:var(--cream);margin-bottom:26px;font-size:clamp(30px,4vw,42px);}
+  .contact .wrap{
+    display:grid;
+    grid-template-columns:0.9fr 1.1fr;
+    gap:90px;
+  }
+  .contact-info p.lead{color:#d9c9ac;max-width:380px;margin-bottom:40px;}
+  .info-row{
+    display:flex;
+    gap:16px;
+    margin-bottom:26px;
+    align-items:flex-start;
+  }
+  .info-row svg{flex-shrink:0;margin-top:3px;color:var(--gold-soft);}
+  .info-row strong{display:block;font-size:14px;color:var(--cream);margin-bottom:3px;}
+  .info-row span{font-size:14px;color:#c9b898;}
+
+  .social-row{display:flex;gap:16px;margin-top:34px;}
+  .social-row a{
+    width:38px;height:38px;
+    border:1px solid rgba(244,236,221,.3);
+    display:flex;align-items:center;justify-content:center;
+    transition:border-color .3s ease, background .3s ease;
+  }
+  .social-row a:hover{border-color:var(--gold);background:rgba(184,137,76,.15);}
+
+  form{display:flex;flex-direction:column;gap:26px;}
+  .field{position:relative;}
+  .field input, .field textarea{
+    width:100%;
+    background:transparent;
+    border:none;
+    border-bottom:1px solid rgba(244,236,221,.35);
+    color:var(--cream);
+    font-family:'Raleway',sans-serif;
+    font-size:15px;
+    padding:10px 2px;
+    outline:none;
+    transition:border-color .3s ease;
+  }
+  .field textarea{resize:none;min-height:80px;}
+  .field label{
+    position:absolute;
+    left:2px;top:10px;
+    font-size:15px;
+    color:#a9967a;
+    pointer-events:none;
+    transition:all .25s ease;
+  }
+  .field input:focus, .field textarea:focus{border-color:var(--gold);}
+  .field input:focus ~ label,
+  .field input:not(:placeholder-shown) ~ label,
+  .field textarea:focus ~ label,
+  .field textarea:not(:placeholder-shown) ~ label{
+    top:-14px;
+    font-size:11.5px;
+    letter-spacing:.04em;
+    color:var(--gold-soft);
+  }
+  .form-msg{
+    font-size:13.5px;
+    color:var(--gold-soft);
+    min-height:18px;
+  }
+
+  /* ---------- Footer ---------- */
+  footer{
+    background:var(--espresso-deep);
+    color:#8f7c62;
+    text-align:center;
+    padding:34px 0;
+    font-size:13px;
+    letter-spacing:.02em;
+  }
+  footer span{color:var(--gold-soft);}
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 980px){
+    .about .wrap, .contact .wrap{grid-template-columns:1fr;gap:50px;}
+    .about-img{max-width:420px;}
+    .t-grid{grid-template-columns:1fr 1fr;row-gap:50px;}
+    .menu-grid{grid-template-columns:1fr;}
+    .gallery-grid{grid-template-rows:180px 180px;}
+  }
+
+  @media (max-width: 720px){
+    .wrap{padding:0 24px;}
+    section{padding:84px 0;}
+    nav ul{
+      position:fixed;
+      top:0;right:-100%;
+      width:76%;
+      max-width:320px;
+      height:100vh;
+      background:var(--espresso);
+      flex-direction:column;
+      justify-content:center;
+      align-items:flex-start;
+      gap:30px;
+      padding:0 44px;
+      transition:right .45s ease;
+      z-index:1050;
+    }
+    nav ul.open{right:0;}
+    nav ul a{color:var(--cream);font-size:16px;}
+    .burger{display:flex;}
+    .t-grid{grid-template-columns:1fr;}
+    .gallery-grid{grid-template-columns:1fr;grid-template-rows:none;}
+    .g1{grid-row:auto;}
+    .g4{grid-column:auto;}
+    .gallery-grid a{height:220px;}
+    .menu-head{flex-direction:column;align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<header id="siteHeader">
+  <div class="wrap">
+    <a href="#home" class="logo">Café <em>Aroma</em></a>
+    <nav>
+      <ul id="navList">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#testimonials">Reviews</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <button class="burger" id="burger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <span class="kicker">Est. 2014 · Small Batch Roastery</span>
+    <h1>Slow mornings, <i>honest</i> coffee</h1>
+    <p>A quiet corner where the beans are roasted with care and every cup is poured like it's the only one we're making today.</p>
+    <a href="#menu" class="btn btn-solid">View the Menu</a>
+  </div>
+  <div class="scroll-cue"></div>
+</section>
+
+<section class="menu" id="menu">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow-rule"><span>What we pour</span></div>
+      <div class="menu-head">
+        <h2>The Menu</h2>
+        <p>Six house favorites, made to order with beans we roast ourselves twice a week.</p>
+      </div>
+    </div>
+    <div class="menu-grid reveal">
+      <div>
+        <div class="menu-item">
+          <div>
+            <span class="menu-item-name">Espresso</span>
+            <span class="menu-item-desc">Double shot, dark cocoa notes, a short and honest pour.</span>
+          </div>
+          <span class="menu-item-price">$3.50</span>
+        </div>
+        <div class="menu-item">
+          <div>
+            <span class="menu-item-name">Cappuccino</span>
+            <span class="menu-item-desc">Equal parts espresso, steamed milk, and airy foam.</span>
+          </div>
+          <span class="menu-item-price">$4.50</span>
+        </div>
+        <div class="menu-item">
+          <div>
+            <span class="menu-item-name">Flat White</span>
+            <span class="menu-item-desc">Silky microfoam over a double ristretto shot.</span>
+          </div>
+          <span class="menu-item-price">$4.80</span>
+        </div>
+      </div>
+      <div>
+        <div class="menu-item">
+          <div>
+            <span class="menu-item-name">Caramel Macchiato</span>
+            <span class="menu-item-desc">Vanilla, steamed milk, espresso, and a caramel finish.</span>
+          </div>
+          <span class="menu-item-price">$5.20</span>
+        </div>
+        <div class="menu-item">
+          <div>
+            <span class="menu-item-name">Mocha</span>
+            <span class="menu-item-desc">Dark chocolate and espresso, topped with cream.</span>
+          </div>
+          <span class="menu-item-price">$5.00</span>
+        </div>
+        <div class="menu-item">
+          <div>
+            <span class="menu-item-name">Almond Croissant</span>
+            <span class="menu-item-desc">Baked fresh each morning, filled with almond cream.</span>
+          </div>
+          <span class="menu-item-price">$4.20</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="gallery" id="gallery">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow-rule"><span>Inside the café</span></div>
+      <h2>A Look Around</h2>
+    </div>
+    <div class="gallery-grid reveal">
+      <a class="g1" href="#"><img src="https://picsum.photos/seed/aroma-1/800/900" alt="Café interior with warm lighting"></a>
+      <a class="g2" href="#"><img src="https://picsum.photos/seed/aroma-2/700/420" alt="Latte art close-up"></a>
+      <a class="g3" href="#"><img src="https://picsum.photos/seed/aroma-3/700/420" alt="Coffee beans on a wooden counter"></a>
+      <a class="g4" href="#"><img src="https://picsum.photos/seed/aroma-4/700/420" alt="Barista preparing a pour-over"></a>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="wrap">
+    <div class="about-img reveal">
+      <img src="https://picsum.photos/seed/aroma-about/700/860" alt="The founders at the original counter">
+    </div>
+    <div class="about-text reveal">
+      <div class="eyebrow-rule"><span>Since 2014</span></div>
+      <h2>Our Story</h2>
+      <p>Café Aroma began as a single roasting drum in the back of a rented shopfront, run by two friends who thought the city's coffee was moving too fast to actually taste.</p>
+      <p class="pull">"We wanted a place where the wait for your order was part of the pleasure, not the cost of it."</p>
+      <p>A decade later, the drum is bigger and the shopfront is ours, but the pace hasn't changed. We still roast in small batches, still greet regulars by name, and still believe a good cup deserves five unhurried minutes.</p>
+    </div>
+  </div>
+</section>
+
+<section class="testimonials" id="testimonials">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow-rule"><span>From our regulars</span></div>
+      <h2>What People Say</h2>
+    </div>
+    <div class="t-grid reveal">
+      <div class="t-card">
+        <div class="t-stars">★★★★★</div>
+        <p class="t-quote">"The flat white here ruined every other coffee shop in the city for me. Consistent, every single time."</p>
+        <div class="t-name"><span>Elena Marchetti</span> · Regular since 2019</div>
+      </div>
+      <div class="t-card">
+        <div class="t-stars">★★★★★</div>
+        <p class="t-quote">"It's the kind of place you come to read for an hour and nobody rushes you out. Rare these days."</p>
+        <div class="t-name"><span>Daniyar Hassan</span> · Weekend visitor</div>
+      </div>
+      <div class="t-card">
+        <div class="t-stars">★★★★★</div>
+        <p class="t-quote">"Their almond croissant sells out by ten, so I plan my whole Saturday morning around getting there early."</p>
+        <div class="t-name"><span>Sofia Lindqvist</span> · Local resident</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div class="contact-info reveal">
+      <div class="eyebrow-rule"><span>Find us</span></div>
+      <h2>Visit the Café</h2>
+      <p class="lead">Drop by, call ahead, or send a note — we read every message with a coffee in hand.</p>
+
+      <div class="info-row">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.4"/></svg>
+        <div><strong>Address</strong><span>18 Linden Street, Riverside District</span></div>
+      </div>
+      <div class="info-row">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 5c0-1 1-2 2-2h2l2 5-2 1.5a12 12 0 0 0 6 6L15.5 14l5 2v2c0 1-1 2-2 2C10 20 4 14 4 5Z"/></svg>
+        <div><strong>Phone</strong><span>+1 (415) 555-0192</span></div>
+      </div>
+      <div class="info-row">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg>
+        <div><strong>Hours</strong><span>Mon–Fri 7:00–19:00 · Sat–Sun 8:00–20:00</span></div>
+      </div>
+
+      <div class="social-row">
+        <a href="#" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg></a>
+        <a href="#" aria-label="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 8h-2a2 2 0 0 0-2 2v2H9v3h2v6h3v-6h2.2l.8-3H14v-1.5c0-.6.4-1 1-1h2V8Z"/></svg></a>
+        <a href="#" aria-label="Twitter"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M22 5.9c-.7.3-1.5.6-2.3.7a4 4 0 0 0 1.8-2.2 8 8 0 0 1-2.5 1 4 4 0 0 0-6.9 3.6A11.4 11.4 0 0 1 3.7 4.6a4 4 0 0 0 1.2 5.3c-.6 0-1.2-.2-1.7-.5v.1a4 4 0 0 0 3.2 3.9 4 4 0 0 1-1.8.1 4 4 0 0 0 3.7 2.8A8 8 0 0 1 2 18.4a11.3 11.3 0 0 0 6.1 1.8c7.3 0 11.3-6.1 11.3-11.3v-.5c.8-.6 1.4-1.3 1.9-2.1Z"/></svg></a>
+      </div>
+    </div>
+
+    <form id="contactForm" class="reveal">
+      <div class="field">
+        <input type="text" id="fname" placeholder=" " required>
+        <label for="fname">Your name</label>
+      </div>
+      <div class="field">
+        <input type="email" id="femail" placeholder=" " required>
+        <label for="femail">Email address</label>
+      </div>
+      <div class="field">
+        <textarea id="fmessage" placeholder=" " required></textarea>
+        <label for="fmessage">Message</label>
+      </div>
+      <button type="submit" class="btn btn-solid" style="align-self:flex-start;">Send Message</button>
+      <p class="form-msg" id="formMsg"></p>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    &copy; <span id="year"></span> <span>Café Aroma</span>. All rights reserved.
+  </div>
+</footer>
+
+<script>
+  // Header scroll state
+  const header = document.getElementById('siteHeader');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Mobile menu
+  const burger = document.getElementById('burger');
+  const navList = document.getElementById('navList');
+  burger.addEventListener('click', () => {
+    burger.classList.toggle('open');
+    navList.classList.toggle('open');
+  });
+  navList.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      burger.classList.remove('open');
+      navList.classList.remove('open');
+    });
+  });
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // Contact form (front-end only demo)
+  const form = document.getElementById('contactForm');
+  const formMsg = document.getElementById('formMsg');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    formMsg.textContent = "Thank you — we'll get back to you shortly.";
+    form.reset();
+    setTimeout(() => { formMsg.textContent = ''; }, 5000);
+  });
+
+  // Footer year
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
